@@ -1,0 +1,12 @@
+services:
+  chroma:
+    image: ghcr.io/chroma-core/chroma:1.0.0
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - chroma-data:/data
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /data
+volumes:
+  chroma-data:

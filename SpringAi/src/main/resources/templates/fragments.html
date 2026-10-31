@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="_csrf" th:content="${_csrf.token}"><meta name="_csrf_header" th:content="${_csrf.headerName}">
+ <title>eShopping</title>
+ <link rel="stylesheet" th:href="@{/css/shop.css}"><link rel="stylesheet" th:href="@{/css/chat.css}">
+ <script th:src="@{/js/tracking.js}" defer></script><script th:src="@{/js/chat.js}" defer></script>
+</head>
+<body><nav th:fragment="nav">
+ <a th:href="@{/home}">Shopping Cart</a><a th:href="@{/product}">Sản phẩm</a>
+ <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Giỏ hàng</a>
+ <a sec:authorize="isAuthenticated()" th:href="@{/order}">Đơn hàng</a>
+ <a th:href="@{/assistant}">Trợ lý mua sắm</a>
+ <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/customer}">Khách hàng</a>
+ <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/category}">Danh mục</a>
+ <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/research}">AI &amp; Tracking</a>
+ <a sec:authorize="isAnonymous()" th:href="@{/login}">Đăng nhập</a>
+ <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post"><span sec:authentication="name"></span><button>Đăng xuất</button></form>
+</nav></body></html>

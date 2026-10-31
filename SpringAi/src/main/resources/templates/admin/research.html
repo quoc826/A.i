@@ -1,0 +1,8 @@
+<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head th:replace="~{fragments :: head}"></head><body><nav th:replace="~{fragments :: nav}"></nav><main><h1>Spring AI &amp; User Tracking</h1>
+<section class="research-stats"><article th:each="entry : ${counts}"><h2 th:text="${entry.value}"></h2><p th:text="${entry.key}"></p></article></section>
+<article><h2>Đồng bộ vector sản phẩm</h2><p th:text="${index.message}"></p>
+<p th:text="|Đã lập chỉ mục: ${index.indexed} · Lỗi: ${index.failed}|"></p><p th:if="${index.lastRun}" th:text="|Lần chạy gần nhất: ${index.lastRun}|"></p>
+<p th:unless="${embeddingEnabled}">Bật profile ai và cấu hình OPENAI_API_KEY để tạo embedding text-embedding-3-small. Thêm profile chroma nếu dùng ChromaDB.</p>
+<form th:action="@{/admin/research/reindex}" method="post"><button th:disabled="${!embeddingEnabled}">Đồng bộ / thử lại mục lỗi</button></form></article>
+<h2>50 sự kiện mới nhất</h2><div class="table-scroll"><table><thead><tr><th>Thời gian</th><th>Sự kiện</th><th>User ID</th><th>Anonymous ID</th><th>Nội dung</th></tr></thead>
+<tbody><tr th:each="event : ${events}"><td th:text="${event.receivedAt}"></td><td th:text="${event.eventType}"></td><td th:text="${event.userId}"></td><td th:text="${event.anonymousId}"></td><td><span th:text="${event.path}"></span><span th:if="${event.productId}" th:text="| · Sản phẩm #${event.productId}|"></span><span th:if="${event.keyword}" th:text="| · ${event.keyword} (${event.resultCount} kết quả)|"></span><span th:if="${event.quantity}" th:text="| · SL ${event.quantity} · ${event.price} USD|"></span></td></tr></tbody></table></div></main></body></html>

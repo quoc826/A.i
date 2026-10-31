@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head th:replace="~{fragments :: head}"></head><body><nav th:replace="~{fragments :: nav}"></nav><main><h1>Sản phẩm</h1>
+<form method="get" th:action="@{/product}" class="product-search">
+ <label>Bạn đang tìm gì?<input name="query" th:value="${query}" maxlength="2000" placeholder="Tai nghe không dây để chạy bộ"></label>
+ <label>Giá tối đa (USD)<input type="number" name="maxPrice" min="0.01" step="0.01" th:value="${maxPrice}"></label>
+ <label class="check-label"><input type="checkbox" name="inStock" value="true" th:checked="${inStock}"> Chỉ còn hàng</label><button>Tìm kiếm</button>
+</form><p th:text="${searchNotice}"></p>
+<span id="search-context" hidden th:if="${!#strings.isEmpty(query)}" th:data-keyword="${query}" th:data-result-count="${#lists.size(products)}"></span>
+<a sec:authorize="hasRole('ADMIN')" class="button" th:href="@{/product/add}">Thêm sản phẩm</a>
+<p th:if="${#lists.isEmpty(products)}">Chưa tìm thấy sản phẩm phù hợp. Hãy thử từ khóa khác.</p>
+<div class="grid"><article th:each="product : ${products}">
+ <img class="product-image" th:if="${product.image != null}" th:src="@{/uploads/{image}(image=${product.image})}" alt="Ảnh sản phẩm">
+ <h2><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}"></a></h2>
+ <p th:if="${product.brand}" th:text="${product.brand}"></p><p th:text="${product.description}"></p>
+ <p><strong th:text="${product.price}"></strong> USD</p><p th:text="|Tồn kho: ${product.quantity}|"></p>
+ <a sec:authorize="hasRole('ADMIN')" th:href="@{/product/edit/{id}(id=${product.id})}">Sửa</a>
+ <form sec:authorize="hasRole('ADMIN')" th:action="@{/product/lock/{id}(id=${product.id})}" method="post"><button>Khóa sản phẩm</button></form>
+</article></div></main></body></html>
